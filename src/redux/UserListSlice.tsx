@@ -1,19 +1,33 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 
-export const fetchUsers = createAsyncThunk(
+interface User {
+    id: number;
+    name: string;
+}
+
+interface UserState {
+    users: User[];
+    status: 'idle' | 'loading' | 'error' | 'succeeded';
+    error: string | null;
+}
+
+const initialState: UserState = {
+    users: [],
+    status: 'idle',
+    error: null,
+}
+
+export const fetchUsers = createAsyncThunk<User[]>(
     'users/fetchUsers',
     async () => {
         const res = await fetch('https://jsonplaceholder.typicode.com/users/')
         return res.json()
     })
 
+
 const userSlice = createSlice({
     name: 'users',
-    initialState: {
-        users: [],
-        status: 'idle',
-        error: null,
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -26,7 +40,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'error'
-                state.error = action.payload
+                state.error = action.error.message
             })
     },
 })
