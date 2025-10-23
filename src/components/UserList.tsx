@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUsers} from "../redux/UserListSlice";
+import {fetchUsers} from "../redux/userListSlice";
 import type { RootState, AppDispatch } from "../redux/store";
 
 
